@@ -4,9 +4,18 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.path as mpath
+from datetime import datetime #To calculate the time of execution
 from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 import os
 
+#This parameter to calculate the time of execution
+time_ini = datetime.now()
+seed = 1234
+rng = np.random.default_rng(seed)
+
+#-------------------------------------------------------------------------------
+
+#Get the variables of magnitude from the file
 V,m=np.loadtxt("cmd_Nalto.txt",skiprows=1,usecols=(6,8),unpack=True)
 
 fig,ax=plt.subplots()
@@ -38,6 +47,7 @@ ax.invert_yaxis()
 plt.show
 plt.savefig('Diagrama color-magnitud.png')
 
+#Get the variables of magnitude from the file
 V,m,t=np.loadtxt("cmd_16035.txt",skiprows=1,usecols=(16,18,10),unpack=True)
 magV1=[]
 magI1=[]
@@ -54,6 +64,7 @@ magI6=[]
 magV7=[]
 magI7=[]
 
+#Create a loop to divide the data in seven ranges of time
 fig,ax=plt.subplots()
 for i in range(0,len(t)):
     age=t[i]/1E9
@@ -105,13 +116,13 @@ plt.xlabel ('Color V-I', fontsize=15)
 plt.ylabel ('Magnitud aparente', fontsize=15)
 lgnd = plt.legend(loc="upper right", numpoints=1, fontsize=8, bbox_to_anchor = (1.11, 0.55))
 
-lgnd.legendHandles[0]._legmarker.set_markersize(6)
-lgnd.legendHandles[1]._legmarker.set_markersize(6)
-lgnd.legendHandles[2]._legmarker.set_markersize(6)
-lgnd.legendHandles[3]._legmarker.set_markersize(6)
-lgnd.legendHandles[4]._legmarker.set_markersize(6)
-lgnd.legendHandles[5]._legmarker.set_markersize(6)
-lgnd.legendHandles[6]._legmarker.set_markersize(6)
+#lgnd.legendHandles[0]._legmarker.set_markersize(6)
+#lgnd.legendHandles[1]._legmarker.set_markersize(6)
+#lgnd.legendHandles[2]._legmarker.set_markersize(6)
+#lgnd.legendHandles[3]._legmarker.set_markersize(6)
+#lgnd.legendHandles[4]._legmarker.set_markersize(6)
+#lgnd.legendHandles[5]._legmarker.set_markersize(6)
+#lgnd.legendHandles[6]._legmarker.set_markersize(6)
 ax.xaxis.set_minor_locator(AutoMinorLocator(10))
 ax.yaxis.set_minor_locator(AutoMinorLocator(10))
 
@@ -128,11 +139,18 @@ ax.invert_yaxis()
 plt.show
 plt.savefig('Diagrama color-magnitud IAC.png')
 
+#-------------------------------------------------------------------------------
+
+#Now we are going to plot one example of isocrone of our cmd
+
+#Get the variables of magnitude from the file
 V,m=np.loadtxt("cmd_Nalto.txt",skiprows=1,usecols=(6,8),unpack=True)
 
 fig,ax=plt.subplots()
 
 ax.plot(V-m,m,'ok',ms=0.1)
+
+#Get the variables of magnitude from the file
 V,m,t=np.loadtxt("cmd_21032.txt",skiprows=1,usecols=(16,18,10),unpack=True)
 magV1=[]
 magI1=[]
@@ -206,8 +224,12 @@ plt.ylabel ('Magnitud aparente', fontsize=15)
 ax.invert_yaxis()
 plt.show
 plt.savefig('Isocrona.png')
+
+#-------------------------------------------------------------------------------
+
+#Create two plots comparation between cmd and synthetic cmd
         
-        
+#Get the variables of magnitude from the file
 V,m=np.loadtxt("cmd_Nalto.txt",skiprows=1,usecols=(6,8),unpack=True)
 
 fig,ax=plt.subplots(1,2)
@@ -769,8 +791,10 @@ print(f'El valor de la función de correlación es {X}')
 fig.suptitle("Diagramas color magnitud")
 plt.savefig('Conteo.png')
 plt.show()
-        
-        
+   
+#-------------------------------------------------------------------------------
+
+#Generate a plot with the resisual from the synthetic cmd
         
 age=[0,0.1,0.1,11,11,12,12,13,13]
 SFR=[0,0,1,1,0,0,4,4,0]
@@ -830,8 +854,8 @@ for i in range(0,len(x)):
     y=np.linspace(5,-6,60)
     if len(x)>2:
         x=np.delete(x,(0))
-print('El máximo de COLOR es:', max(COLOR))
-print('El mínimo de COLOR es:', min(COLOR))
+#print('El máximo de COLOR es:', max(COLOR))
+#print('El mínimo de COLOR es:', min(COLOR))
 plt.scatter(Residuox1,Residuoy1,marker='s',c=COLOR,cmap='gray')
 ax.invert_yaxis()
 
@@ -857,4 +881,7 @@ plt.ylabel ('Magnitud aparente', fontsize=15)
 plt.show
 plt.savefig('Residuossin.png')
 
-
+time_end = datetime.now()
+print(f"Initial time...: {time_ini}")
+print(f"Final time.....: {time_end}")
+print(f"Excecution time: {time_end-time_ini}")
